@@ -29,7 +29,7 @@ void display()
 {
 	ptr=head;
 	if(ptr==NULL)
-	cout<<"list is empty";
+	cout<<" list is empty";
 	else
 	{
 		while(ptr!=NULL)

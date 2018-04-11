@@ -1,0 +1,162 @@
+#include<iostream>
+using namespace std;
+int z=0;
+struct node
+{
+	int info;
+	node *link;
+};
+node *head,*ptr,*t,*p;
+
+void create(int i)
+{
+	p=new node;
+	p->info=i;
+	p->link=NULL;
+    if(head==NULL)
+	{
+	head=p;
+	}
+	else
+	{
+		ptr=p;
+		p->link=head;
+		head=ptr;
+	}
+}
+
+void display()
+{
+	ptr=head;
+	if(ptr==NULL)
+	cout<<"list is empty";
+	else
+	{
+		while(ptr!=NULL)
+		{
+			cout<<ptr->info<<ends;
+			ptr=ptr->link;
+		}
+	}
+}
+
+
+void del()
+{
+	head=head->link;
+	
+}
+
+void search(int b)
+{
+	ptr=head;
+	if(ptr==NULL)
+	cout<<"list is empty";
+	else
+	{
+		while(ptr!=NULL)
+		{
+			if(b==ptr->info)
+			z=1;
+			else
+			ptr=ptr->link;
+		}
+	}
+}
+
+int main()
+{
+	
+	int allo[3],max[3],avail,need[3],req;
+	int i,j,k;
+	cout<<"Enter the instances of processes allocated to P0,P1,P2 respectively\n";
+	for(i=0;i<3;i++)
+	{
+		cin>>allo[i];
+	}
+	cout<<"Enter the maximum instances of processes that can be allocated to P0,P1,P2 respectively\n";
+	for(i=0;i<3;i++)
+	{
+		cin>>max[i];
+	}
+	cout<<"Enter the available instances of resources R0,R1,R2 respectively";
+		cin>>avail;
+	for(i=0;i<3;i++)
+	{
+		need[i]=max[i]-allo[i];
+	}
+	cout<<"Enter the process who made a request";
+	int a;
+	cin>>a;
+	cout<<"Enter the instances of resources R0,R1,R2 requested";
+		cin>>req;
+
+		if(req<need[a] && req<avail)
+		{
+			avail=avail-req;
+			allo[a]=allo[a]+req;
+			need[a]=need[a]-req;
+		}
+	cout<<"\nThe final available is :\n";
+		cout<<avail;
+
+		cout<<"\nThe final alloacted matrix is :\n";
+	for(i=0;i<3;i++)
+	{
+		cout<<allo[i];
+		cout<<endl;
+	}	
+		cout<<"\nThe final need matrix is :\n";
+	for(i=0;i<3;i++)
+	{
+		cout<<need[i];
+		cout<<endl;
+	}
+	int flag[3];
+	for(i=0;i<3;i++)
+	{
+		flag[i]=0;
+	}
+	while(flag[0]!=1 && flag[1]!=1 && flag[2]!=1)
+	{
+		
+		for(i=0;i<3;i++)
+		{
+			if(need[i]<avail)
+			{
+				avail=avail+allo[i];
+				flag[i]=1;
+			}
+			else
+			{
+				create(i);
+			}
+		}
+		ptr=head;
+		while(ptr!=NULL)
+		{
+			
+			if(ptr->info<avail)
+			{
+				for(i=0;i<3;i++)
+				{
+				avail=avail+allo[i];
+				flag[i]=1;
+				}
+				del();
+			}
+			ptr=ptr->link;
+		}
+		if(head==NULL)
+		{
+			cout<<"process is in safe state";
+			break;
+		}
+		else
+		{
+			cout<<"Process not in safe state";
+			break;
+			
+		}
+	}
+}
